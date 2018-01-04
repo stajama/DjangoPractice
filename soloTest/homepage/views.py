@@ -25,8 +25,7 @@ logging.disable(logging.WARNING)
 
 def home(request):
     '''returns html for homepage. 5 top news stories from NYTimes API call.'''
-    # TODO - implement weather API call. implement NASA/hubble picture of the 
-    # day request call. pretty up html/css on page.
+    # TODO - pretty up html/css on page.
 
     url = "https://api.nytimes.com/svc/topstories/v2/home.json"
     headInfo = {"api-key": "e9aec1ec7dca446d817bb0832ef71834"}
