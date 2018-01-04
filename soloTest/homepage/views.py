@@ -90,12 +90,12 @@ def home(request):
                     </p>
                         
         <p>\n\n\n</p>
-        <p>Image Test</p>
+        <p>From the Hubble Space Telescope</p>
         <img  src="{18}">'''.format(
             article1[0], article1[1], article1[2], article2[0], article2[1], 
             article2[2], article3[0], article3[1], article3[2], article4[0], 
             article4[1], article4[2], article5[0], article5[1], article5[2],
-            weatherInfo[0], weatherInfo[1], weatherInfo[2], getHumblePic())
+            calculateFarenheit(weatherInfo[0]) + "&#176; F", weatherInfo[1], weatherInfo[2], getHumblePic())
     return HttpResponse(httpString)
 
 def getWeatherInfo():
@@ -167,3 +167,7 @@ def getHumblePic():
     logging.CRITICAL("getHumblePic --- Houston, we have a problem...")
     return
 
+def calculateFarenheit(tempString):
+    temp = float(tempString)
+    print(temp)
+    return str(round((temp * (9 / 5)) - 459.67, 2))
