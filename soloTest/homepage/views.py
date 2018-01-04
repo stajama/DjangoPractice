@@ -168,6 +168,7 @@ def getHumblePic():
     return
 
 def calculateFarenheit(tempString):
+    '''Returns the string input in Kelvin as a string in Fahrenheit.)
     temp = float(tempString)
     print(temp)
     return str(round((temp * (9 / 5)) - 459.67, 2))
