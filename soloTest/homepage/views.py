@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.utils import timezone
+from django.template import loader
 from homepage.models import Weather
 import requests
 import json
@@ -24,79 +25,29 @@ logging.basicConfig(level=logging.CRITICAL, format=' %(asctime)s - %(levelname)s
 logging.disable(logging.WARNING)
 
 def home(request):
-    '''returns html for homepage. 5 top news stories from NYTimes API call.'''
+    '''returns homepage template. Calls NYTimes API for 5 top news articles.'''
     # TODO - pretty up html/css on page.
 
+    contextDic = {}
     url = "https://api.nytimes.com/svc/topstories/v2/home.json"
     headInfo = {"api-key": "e9aec1ec7dca446d817bb0832ef71834"}
     newsRequest = requests.get(url, headInfo)
     newsRequest = newsRequest.text
     newsRequestDict = json.loads(newsRequest)
     counter = 0
-    for i in newsRequestDict["results"]:
-        logging.debug("home - newsAPIParseCounter: " + str(counter))
-        if counter >= 5:
-            logging.info("Sanity Check - home View - newsAPIParseCounter > 5: " + str(counter))
-            break
-        else:
-            logging.debug("Story " + str(counter) + " --- " + str(i))
-            if counter == 0:
-                article1 = [i["title"], i["abstract"], i["url"]]
-            elif counter == 1:
-                article2 = [i["title"], i["abstract"], i["url"]]
-            elif counter == 2:
-                article3 = [i["title"], i["abstract"], i["url"]]
-            elif counter == 3:
-                article4 = [i["title"], i["abstract"], i["url"]]
-            elif counter == 4:
-                article5 = [i["title"], i["abstract"], i["url"]]
-            else:
-                raise ValueError("newsAPIParseCounter has gone crazy...")
-            counter += 1
+    for i in range(0, 15, 3):
+        data = newsRequestDict["results"][counter]
+        counter += 1
+        contextDic['news' + str(i)] = data['title']
+        contextDic['news' + str(i + 1)] = data['abstract']
+        contextDic['news' + str(i + 2)] = data['url']
     weatherInfo = getWeatherInfo()
-    httpString = ''' <head>
-                        <title>Mighty Mos Custom Homepage</title>
-                    </head>
-                    <h1>Mighty Mos Custom Homepage</h1>
-                    
-                    <p>
-                        <b>Weather</b>
-                    </p>
-                    <p>
-                         {15} --- {16} --- {17}
-                    </p>
-                    <p>
-                        <b>News</b>
-                    </p>
-                    <p>
-                        <a href="{2}">{0}\n</a><br />
-                        {1}\n\n<br /><div></div>
-                    </p> 
-                    <p>
-                        <a href="{5}">{3}\n</a><br />
-                        {4}\n\n<br /><div></div>
-                    </p>
-                    <p>    
-                        <a href="{8}">{6}\n</a><br />
-                        {7}\n\n<br /><div></div>
-                    </p>
-                    <p>
-                        <a href="{11}">{9}\n</a><br />
-                        {10}\n\n<br /><div></div>
-                    </p>
-                    <p>
-                        <a href="{14}">{12}\n</a><br />
-                        {13}\n\n<br /><div></div>
-                    </p>
-                        
-        <p>\n\n\n</p>
-        <p>From the Hubble Space Telescope</p>
-        <img  src="{18}">'''.format(
-            article1[0], article1[1], article1[2], article2[0], article2[1], 
-            article2[2], article3[0], article3[1], article3[2], article4[0], 
-            article4[1], article4[2], article5[0], article5[1], article5[2],
-            calculateFarenheit(weatherInfo[0]) + "&#176; F", weatherInfo[1], weatherInfo[2], getHumblePic())
-    return HttpResponse(httpString)
+    contextDic['weatherTemp'] = calculateFahrenheit(weatherInfo[0]) + "F"
+    contextDic['weatherDesc'] = weatherInfo[1]
+    contextDic['weatherCity'] = weatherInfo[2]
+    contextDic['photo'] = getHumblePic()
+    template = loader.get_template('homepage/home.html')
+    return HttpResponse(template.render(contextDic, request))
 
 def getWeatherInfo():
     '''Makes a call to the Open Weather API, returns a list: 
@@ -167,8 +118,8 @@ def getHumblePic():
     logging.CRITICAL("getHumblePic --- Houston, we have a problem...")
     return
 
-def calculateFarenheit(tempString):
+def calculateFahrenheit(tempString):
     '''Returns the string input in Kelvin as a string in Fahrenheit.)'''
     temp = float(tempString)
     print(temp)
-    return str(round((temp * (9 / 5)) - 459.67, 2))#work
+    return str(round((temp * (9 / 5)) - 459.67, 2))
