@@ -1,41 +1,83 @@
+<!--HTML Documenr-->
+
+
+<!--Import links and statements-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css?family=Lora" rel="stylesheet">
+
+
+<!--Heading Information-->
 <head>
     <title>Mighty Mos Custom Homepage</title>
 </head>
-<h1>Mighty Mos Custom Homepage</h1>
 
-<p>
-    <b>Weather</b>
-</p>
-<p>
-    {{ weatherTemp }} --- {{ weatherDesc }} --- {{ weatherCity }}
-</p>
-<p>
-    <b>News</b>
-</p>
-<p>
-    <a href="{{ news2 }}">{{ news0 }}</a><br>
-    {{ news1 }}<br><div></div>
-</p> 
-<p>
-    <a href="{{ news5 }}">{{ news3 }}</a><br>
-    {{ news4 }}<br><div></div>
-</p>
-<p>    
-    <a href="{{ news8 }}">{{ news6 }}</a><br>
-    {{ news7 }}<br><div></div>
-</p>
-<p>
-    <a href="{{ news11 }}">{{ news9 }}</a><br>
-    {{ news10 }}<br><div></div>
-</p>
-<p>
-    <a href="{{ news14 }}">{{ news12 }}</a><br>
-    {{ news13 }}<br><div></div>
-</p>
-                        
+
+<!--CSS-->
+<style type="text/css">
+    .title {font-family: 'Lora', serif;
+            font-size: 50px;}
+    .newsSeperator {padding-bottom: 20px}
+</style>
+
+
+<!--Title Bar-->
+<h1 class='text-center title'>Mighty Mos Custom Homepage</h1>
+
+
+<!--Weather Widget-->
+<div style="border-style: round; background-color: blue; color: white" class="float-right">
+    <p >
+        <b>Weather</b>
+    </p>
+    <p>
+        {{ weatherTemp }} <br> {{ weatherDesc }} <br> {{ weatherCity }}
+        <!--link for potential later use. https://openweathermap.org/city/4393217 -->
+    </p>
+</div>
+
+<!-- News Section-->
+<div style="margin-left: 50px">
+    <p>
+        <b>News</b>
+    </p>
+    <p class="newsSeperator">
+        <a href="{{ news0.url }}">{{ news0.title }}</a><br>
+        {{ news0.abstract }}<br>
+        <img src='{{ news0.image }}' alt="None">
+
+    </p> 
+
+    <p class="newsSeperator">
+        <a href="{{ news1.url }}">{{ news1.title }}</a><br>
+        {{ news1.abstract }}<br>
+        <img src='{{ news1.image }}' alt="None">
+    </p>
+    <p class="newsSeperator">    
+        <a href="{{ news2.url }}">{{ news2.title }}</a><br>
+        {{ news2.abstract }}<br>
+        <img src='{{ news2.image }}' alt="None">
+    </p>
+    <p class="newsSeperator">
+        <a href="{{ news3.url }}">{{ news3.title }}</a><br>
+        {{ news3.abstract }}<br>
+        <img src='{{ news3.image }}' alt="None">
+    </p>
+    <p class="newsSeperator">
+        <a href="{{ news4.url }}">{{ news4.title }}</a><br>
+        {{ news4.abstract }}<br>
+        <img src='{{ news4.image }}' alt="None">
+    </p>
+</div>
+
 <p></p>
 <p></p>
 <p></p>
-<!--Bad to deal with page spacing...-->
+<!--Bad way to deal with page spacing...-->
+
+
+
 <p>From the Hubble Space Telescope</p>
-<img  src="{{ photo }}">
+<img  class='container-fluid' src="{{ photo }}">

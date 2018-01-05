@@ -35,12 +35,15 @@ def home(request):
     newsRequest = newsRequest.text
     newsRequestDict = json.loads(newsRequest)
     counter = 0
-    for i in range(0, 15, 3):
+    for i in range(0, 5):
         data = newsRequestDict["results"][counter]
+        contextDic.setdefault("news" + str(i), {})
         counter += 1
-        contextDic['news' + str(i)] = data['title']
-        contextDic['news' + str(i + 1)] = data['abstract']
-        contextDic['news' + str(i + 2)] = data['url']
+        contextDic['news' + str(i)]['title'] = data['title']
+        contextDic['news' + str(i)]['abstract'] = data['abstract']
+        contextDic['news' + str(i)]['url'] = data['url']
+        contextDic['news' + str(i)]['image'] = data["multimedia"][0]['url']
+        print(contextDic["news" + str(i)])
     weatherInfo = getWeatherInfo()
     contextDic['weatherTemp'] = calculateFahrenheit(weatherInfo[0]) + "F"
     contextDic['weatherDesc'] = weatherInfo[1]
@@ -122,4 +125,4 @@ def calculateFahrenheit(tempString):
     '''Returns the string input in Kelvin as a string in Fahrenheit.)'''
     temp = float(tempString)
     print(temp)
-    return str(round((temp * (9 / 5)) - 459.67, 2))
+    return str(round((temp * (9.0 / 5.0)) - 459.67, 2))

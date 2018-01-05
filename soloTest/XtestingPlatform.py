@@ -1,23 +1,13 @@
-import requests
-import bs4
-import re
-import random
+def calculateFahrenheit(tempString):
+    '''Returns the string input in Kelvin as a string in Fahrenheit.)'''
+    temp = float(tempString)
+    print(temp)
+    return str(round((temp * (9 / 5)) - 459.67, 2))
 
-def getHumblePic():
-    x = requests.get('http://hubblesite.org/images/gallery')
-    soup = bs4.BeautifulSoup(x.text, 'lxml')
-    pickList = []
-    for i in soup.find_all('a'):
-        if i.get('href') == None:
-            continue
-        if re.match(r'/image/\d{4}/', i.get('href')) != None:
-            pickList.append("http://hubblesite.org" + i.get('href'))
-    selected = pickList[random.randint(0, len(pickList) - 1)]
-    x = requests.get(selected)
-    soup = bs4.BeautifulSoup(x.text, 'lxml')
-    for i in soup.find_all('a'):
-        if 'http://imgsrc.' in i.get('href'):
-            return i.get('href')
-    return
+def calculateFahrenheit2(tempString):
+    '''Returns the string input in Kelvin as a string in Fahrenheit.)'''
+    temp = float(tempString)
+    print(temp)
+    return str(round((temp * (9.0 / 5.0)) - 459.67, 2))
 
-print(getHumblePic())
+print(calculateFahrenheit(272.27), calculateFahrenheit2(272.27))
